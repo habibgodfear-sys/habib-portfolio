@@ -1,7 +1,8 @@
 import { GraphicItem, VideoItem, ServiceItem, SkillItem, ExperienceItem, TestimonialItem, ProcessStep, Differentiator } from '../types';
+import habiburPortrait from '../assets/images/regenerated_image_1785462133752.png';
 
 // Hero portrait image for Habibur Rahman
-export const HERO_PORTRAIT_URL = '/src/assets/images/regenerated_image_1785462133752.png';
+export const HERO_PORTRAIT_URL = habiburPortrait;
 
 // Social Media & Graphic Design Portfolio items
 export const GRAPHIC_ITEMS: GraphicItem[] = [];

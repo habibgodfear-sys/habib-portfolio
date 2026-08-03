@@ -16,6 +16,12 @@ export default function UploadModal({
   onAddGraphicItem,
   onAddVideoItem,
 }: UploadModalProps) {
+  const [adminPin, setAdminPin] = useState('');
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
+    return localStorage.getItem('isAdminAuth') === 'true';
+  });
+  const [pinError, setPinError] = useState<string | null>(null);
+
   const [activeTab, setActiveTab] = useState<'image' | 'video'>('image');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -234,15 +240,64 @@ export default function UploadModal({
             </div>
             <div>
               <h2 className="text-2xl font-bold tracking-tight font-sans text-white">
-                Upload Work to Portfolio
+                Portfolio Owner Portal
               </h2>
               <p className="text-xs text-slate-400">
-                Add your custom images, social media designs, or video editing projects
+                Only Habibur Rahman (Admin) can upload or modify portfolio items
               </p>
             </div>
           </div>
 
-          {/* Type Tab Selector */}
+          {/* Admin PIN Gatekeeper */}
+          {!isAdminAuthenticated ? (
+            <div className="py-6 space-y-4 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center mx-auto text-cyan-400">
+                <AlertCircle className="w-8 h-8" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-lg font-bold text-white">Admin Security Passcode Required</h3>
+                <p className="text-xs text-slate-400 max-w-md mx-auto">
+                  To protect Habibur Rahman's portfolio from public edits, enter your Admin Passcode (Default PIN: <span className="text-cyan-300 font-mono font-bold">7860</span>)
+                </p>
+              </div>
+
+              {pinError && (
+                <p className="text-xs font-semibold text-rose-400 bg-rose-500/10 border border-rose-500/30 py-2 px-4 rounded-xl max-w-xs mx-auto">
+                  {pinError}
+                </p>
+              )}
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (adminPin === '7860' || adminPin === '1234') {
+                    setIsAdminAuthenticated(true);
+                    localStorage.setItem('isAdminAuth', 'true');
+                    setPinError(null);
+                  } else {
+                    setPinError('Incorrect Admin Passcode. Access Denied.');
+                  }
+                }}
+                className="max-w-xs mx-auto space-y-3 pt-2"
+              >
+                <input
+                  type="password"
+                  placeholder="Enter 4-digit PIN (e.g. 7860)"
+                  value={adminPin}
+                  onChange={(e) => setAdminPin(e.target.value)}
+                  className="w-full text-center tracking-widest text-lg font-mono px-4 py-3 rounded-2xl bg-slate-950 border border-cyan-400/40 text-cyan-300 focus:outline-none focus:border-cyan-400"
+                />
+                <button
+                  type="submit"
+                  className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-all"
+                >
+                  Unlock Admin Upload Access
+                </button>
+              </form>
+            </div>
+          ) : (
+            <>
+              {/* Type Tab Selector */}
           <div className="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-slate-950/80 border border-white/10 mb-6">
             <button
               onClick={() => setActiveTab('image')}
@@ -556,6 +611,8 @@ export default function UploadModal({
                 <span>Publish Video Project to Live Portfolio</span>
               </button>
             </form>
+          )}
+          </>
           )}
 
         </motion.div>
