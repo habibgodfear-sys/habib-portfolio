@@ -230,7 +230,7 @@ export default function Hero({ onOpenCvModal, onOpenHireModal, onPlayVideo, feat
                     src={HERO_PORTRAIT_URL}
                     alt="Habibur Rahman - Graphic & Motion Designer"
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain object-bottom scale-[1.02] hover:scale-105 transition-transform duration-700 relative z-10"
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 relative z-10"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-50 z-10 pointer-events-none" />
                 </div>

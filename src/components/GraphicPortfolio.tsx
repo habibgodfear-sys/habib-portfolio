@@ -8,20 +8,24 @@ import Tilt3DCard from './Tilt3DCard';
 interface GraphicPortfolioProps {
   onOpenLightbox: (item: GraphicItem) => void;
   userGraphicItems: GraphicItem[];
+  deletedGraphicItemIds?: string[];
   onOpenUploadModal: () => void;
-  onDeleteUserGraphicItem?: (id: string) => void;
+  onDeleteUserGraphicItem?: (id: string, title?: string) => void;
 }
 
 export default function GraphicPortfolio({
   onOpenLightbox,
   userGraphicItems,
+  deletedGraphicItemIds = [],
   onOpenUploadModal,
   onDeleteUserGraphicItem,
 }: GraphicPortfolioProps) {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  // Combine default items with user-uploaded items
-  const allItems = [...userGraphicItems, ...GRAPHIC_ITEMS];
+  // Combine default items with user-uploaded items, filtering out deleted ones
+  const allItems = [...userGraphicItems, ...GRAPHIC_ITEMS].filter(
+    (item) => !deletedGraphicItemIds.includes(item.id)
+  );
 
   // Dynamically compute categories
   const categoriesSet = new Set(['All']);
@@ -169,17 +173,19 @@ export default function GraphicPortfolio({
                           </div>
                         )}
 
-                        {/* Delete User Item Button */}
-                        {isUserUploaded && onDeleteUserGraphicItem && (
+                        {/* Delete Item Button */}
+                        {onDeleteUserGraphicItem && (
                           <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              onDeleteUserGraphicItem(item.id);
+                              e.preventDefault();
+                              onDeleteUserGraphicItem(item.id, item.title);
                             }}
-                            className="absolute top-3 right-3 z-20 p-2 rounded-full bg-rose-600/80 hover:bg-rose-600 text-white shadow-lg transition-all"
-                            title="Delete Uploaded Item"
+                            className="absolute top-3 right-3 z-50 p-2.5 rounded-full bg-slate-950/90 hover:bg-rose-600 border border-white/20 text-rose-400 hover:text-white shadow-2xl transition-all scale-100 hover:scale-110 cursor-pointer"
+                            title="Delete Item"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         )}
 

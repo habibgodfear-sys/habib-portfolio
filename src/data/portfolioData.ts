@@ -1,11 +1,175 @@
 import { GraphicItem, VideoItem, ServiceItem, SkillItem, ExperienceItem, TestimonialItem, ProcessStep, Differentiator } from '../types';
 import habiburPortrait from '../assets/images/regenerated_image_1785462133752.png';
+import brandIdentityImg from '../assets/images/brand_identity_design_1785461426104.jpg';
+import cyberPosterImg from '../assets/images/cyber_poster_design_1785461438795.jpg';
+import lavendulaSmImg from '../assets/images/lavendula_sm_1785543599208.jpg';
+import realmeBudsImg from '../assets/images/realme_buds_sm_1785543582702.jpg';
+import fijarPosterImg from '../assets/images/orig_fijar_poster_1785543334937.jpg';
+import goponiyotaPosterImg from '../assets/images/orig_goponiyota_poster_1785543291747.jpg';
+import muslimPosterImg from '../assets/images/orig_muslim_poster_1785543320573.jpg';
+import zalimPosterImg from '../assets/images/orig_zalim_poster_1785543305905.jpg';
+import typoFijarImg from '../assets/images/typo_fijar_poster_1785543071217.jpg';
+import typoGoponiyotaImg from '../assets/images/typo_goponiyota_poster_1785543022096.jpg';
+import typoMuslimImg from '../assets/images/typo_muslim_poster_1785543054389.jpg';
+import typoZalimImg from '../assets/images/typo_zalim_poster_1785543039050.jpg';
+import typoPoster1 from '../assets/images/typo_poster_1_1785501111108.jpg';
+import typoPoster2 from '../assets/images/typo_poster_2_1785501125944.jpg';
+import typoPoster3 from '../assets/images/typo_poster_3_1785501142815.jpg';
+import typoPoster4 from '../assets/images/typo_poster_4_1785501159602.jpg';
 
 // Hero portrait image for Habibur Rahman
 export const HERO_PORTRAIT_URL = habiburPortrait;
 
 // Social Media & Graphic Design Portfolio items
-export const GRAPHIC_ITEMS: GraphicItem[] = [];
+export const GRAPHIC_ITEMS: GraphicItem[] = [
+  {
+    id: 'g-01',
+    title: 'Cyberpunk Aesthetic Poster',
+    category: 'Poster Design',
+    imageUrl: cyberPosterImg,
+    description: 'High-contrast neon typography poster designed for modern music festivals and digital branding.',
+    tools: ['Photoshop', 'Illustrator'],
+    year: '2026',
+    featured: true
+  },
+  {
+    id: 'g-02',
+    title: 'Realme Buds Commercial Ad',
+    category: 'Social Media',
+    imageUrl: realmeBudsImg,
+    description: 'High-converting product advertisement banner for earbud promotional campaigns.',
+    tools: ['Photoshop'],
+    year: '2026',
+    featured: true
+  },
+  {
+    id: 'g-03',
+    title: 'Lavendula Premium Product Post',
+    category: 'Social Media',
+    imageUrl: lavendulaSmImg,
+    description: 'Minimalist luxury social media design tailored for cosmetics and lifestyle branding.',
+    tools: ['Photoshop', 'Illustrator'],
+    year: '2026',
+    featured: true
+  },
+  {
+    id: 'g-04',
+    title: 'Brand Identity Vector Art',
+    category: 'Brand Identity',
+    imageUrl: brandIdentityImg,
+    description: 'Custom vector artwork and brand design assets crafted for client brand identity.',
+    tools: ['Illustrator'],
+    year: '2026'
+  },
+  {
+    id: 'g-05',
+    title: 'Fijar Original Poster Design',
+    category: 'Poster Design',
+    imageUrl: fijarPosterImg,
+    description: 'Dramatic high-impact movie poster composition with custom key visuals.',
+    tools: ['Photoshop'],
+    year: '2026'
+  },
+  {
+    id: 'g-06',
+    title: 'Goponiyota Custom Poster Design',
+    category: 'Poster Design',
+    imageUrl: goponiyotaPosterImg,
+    description: 'Atmospheric dark theme poster visual for dramatic storytelling.',
+    tools: ['Photoshop'],
+    year: '2026'
+  },
+  {
+    id: 'g-07',
+    title: 'Muslim Youth Cultural Poster',
+    category: 'Poster Design',
+    imageUrl: muslimPosterImg,
+    description: 'Cultural event graphic poster with vibrant visual hierarchy.',
+    tools: ['Photoshop', 'Illustrator'],
+    year: '2026'
+  },
+  {
+    id: 'g-08',
+    title: 'Zalim Dramatic Poster Art',
+    category: 'Poster Design',
+    imageUrl: zalimPosterImg,
+    description: 'Cinematic visual composition and artwork poster.',
+    tools: ['Photoshop'],
+    year: '2026'
+  },
+  {
+    id: 'g-09',
+    title: 'Fijar Typography Design',
+    category: 'Typography',
+    imageUrl: typoFijarImg,
+    description: 'Custom Bengali typographic lettering and modern layout design.',
+    tools: ['Illustrator'],
+    year: '2026'
+  },
+  {
+    id: 'g-10',
+    title: 'Goponiyota Expressive Typography',
+    category: 'Typography',
+    imageUrl: typoGoponiyotaImg,
+    description: 'Modern title lettering typography for digital posters.',
+    tools: ['Illustrator'],
+    year: '2026'
+  },
+  {
+    id: 'g-11',
+    title: 'Muslim Calligraphic Typography',
+    category: 'Typography',
+    imageUrl: typoMuslimImg,
+    description: 'Expressive typographic design for social media banners.',
+    tools: ['Illustrator'],
+    year: '2026'
+  },
+  {
+    id: 'g-12',
+    title: 'Zalim Kinetic Typography Art',
+    category: 'Typography',
+    imageUrl: typoZalimImg,
+    description: 'Bold expressive title lettering design.',
+    tools: ['Illustrator'],
+    year: '2026'
+  },
+  {
+    id: 'g-13',
+    title: 'Kinetic Motion Typography 01',
+    category: 'Typography',
+    imageUrl: typoPoster1,
+    description: 'Clean typographic layout designed for motion animation assets.',
+    tools: ['After Effects', 'Illustrator'],
+    year: '2026'
+  },
+  {
+    id: 'g-14',
+    title: 'Kinetic Motion Typography 02',
+    category: 'Typography',
+    imageUrl: typoPoster2,
+    description: 'Dynamic composition featuring sharp geometric typography.',
+    tools: ['After Effects', 'Illustrator'],
+    year: '2026'
+  },
+  {
+    id: 'g-15',
+    title: 'Kinetic Motion Typography 03',
+    category: 'Typography',
+    imageUrl: typoPoster3,
+    description: 'Creative layout focused on sound and typography synchronization.',
+    tools: ['After Effects', 'Illustrator'],
+    year: '2026'
+  },
+  {
+    id: 'g-16',
+    title: 'Kinetic Motion Typography 04',
+    category: 'Typography',
+    imageUrl: typoPoster4,
+    description: 'High-contrast editorial typography composition.',
+    tools: ['After Effects', 'Illustrator'],
+    year: '2026'
+  }
+];
 
 // Video Portfolio items with exact YouTube links provided in prompt
 export const VIDEO_ITEMS: VideoItem[] = [

@@ -8,13 +8,15 @@ import Tilt3DCard from './Tilt3DCard';
 interface VideoPortfolioProps {
   onPlayVideo: (item: VideoItem) => void;
   userVideoItems: VideoItem[];
+  deletedVideoItemIds?: string[];
   onOpenUploadModal: () => void;
-  onDeleteUserVideoItem?: (id: string) => void;
+  onDeleteUserVideoItem?: (id: string, title?: string) => void;
 }
 
 export default function VideoPortfolio({
   onPlayVideo,
   userVideoItems,
+  deletedVideoItemIds = [],
   onOpenUploadModal,
   onDeleteUserVideoItem,
 }: VideoPortfolioProps) {
@@ -24,7 +26,9 @@ export default function VideoPortfolio({
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  const allVideos = [...userVideoItems, ...VIDEO_ITEMS];
+  const allVideos = [...userVideoItems, ...VIDEO_ITEMS].filter(
+    (item) => !deletedVideoItemIds.includes(item.id)
+  );
 
   // Dynamically compute categories
   const categoriesSet = new Set(['All']);
@@ -264,17 +268,19 @@ export default function VideoPortfolio({
                           </div>
                         )}
 
-                        {/* Delete User Video Button */}
-                        {isUserUploaded && onDeleteUserVideoItem && (
+                        {/* Delete Video Button */}
+                        {onDeleteUserVideoItem && (
                           <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              onDeleteUserVideoItem(video.id);
+                              e.preventDefault();
+                              onDeleteUserVideoItem(video.id, video.title);
                             }}
-                            className="absolute top-3 right-3 z-20 p-2 rounded-md bg-rose-600/80 hover:bg-rose-600 text-white shadow-lg transition-all"
-                            title="Delete Uploaded Video"
+                            className="absolute top-3 right-3 z-50 p-2.5 rounded-lg bg-slate-950/90 hover:bg-rose-600 border border-white/20 text-rose-400 hover:text-white shadow-2xl transition-all scale-100 hover:scale-110 cursor-pointer"
+                            title="Delete Video"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         )}
 
@@ -415,6 +421,21 @@ export default function VideoPortfolio({
                       <span className="tracking-wider">PLAY</span>
                       <ArrowUpRight className="w-3.5 h-3.5 text-cyan-200 group-hover/playbtn:translate-x-0.5 group-hover/playbtn:-translate-y-0.5 transition-transform" />
                     </button>
+
+                    {onDeleteUserVideoItem && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          onDeleteUserVideoItem(video.id, video.title);
+                        }}
+                        className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-rose-600 border border-white/20 text-rose-400 hover:text-white transition-all ml-1 cursor-pointer"
+                        title="Delete Video"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
               );

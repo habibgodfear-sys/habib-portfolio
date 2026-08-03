@@ -18,6 +18,7 @@ import CvModal from './components/CvModal';
 import LightboxModal from './components/LightboxModal';
 import VideoModal from './components/VideoModal';
 import UploadModal from './components/UploadModal';
+import DeleteConfirmModal from './components/DeleteConfirmModal';
 import { GraphicItem, VideoItem } from './types';
 import { VIDEO_ITEMS } from './data/portfolioData';
 
@@ -27,6 +28,11 @@ export default function App() {
   const [selectedGraphicItem, setSelectedGraphicItem] = useState<GraphicItem | null>(null);
   const [selectedVideoItem, setSelectedVideoItem] = useState<VideoItem | null>(null);
   const [preselectedService, setPreselectedService] = useState<string>('');
+  const [deletePending, setDeletePending] = useState<{
+    id: string;
+    type: 'graphic' | 'video';
+    title?: string;
+  } | null>(null);
 
   // Local Storage state for user-uploaded graphic items
   const [userGraphicItems, setUserGraphicItems] = useState<GraphicItem[]>(() => {
@@ -42,6 +48,25 @@ export default function App() {
   const [userVideoItems, setUserVideoItems] = useState<VideoItem[]>(() => {
     try {
       const saved = localStorage.getItem('userVideoItems');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Local Storage state for deleted default items
+  const [deletedGraphicItemIds, setDeletedGraphicItemIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('deletedGraphicItemIds');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [deletedVideoItemIds, setDeletedVideoItemIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('deletedVideoItemIds');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -64,24 +89,55 @@ export default function App() {
     }
   }, [userVideoItems]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('deletedGraphicItemIds', JSON.stringify(deletedGraphicItemIds));
+    } catch (e) {
+      console.warn('LocalStorage error:', e);
+    }
+  }, [deletedGraphicItemIds]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('deletedVideoItemIds', JSON.stringify(deletedVideoItemIds));
+    } catch (e) {
+      console.warn('LocalStorage error:', e);
+    }
+  }, [deletedVideoItemIds]);
+
   const handleAddGraphicItem = (newItem: GraphicItem) => {
     setUserGraphicItems((prev) => [newItem, ...prev]);
-  };
-
-  const handleDeleteUserGraphicItem = (id: string) => {
-    if (confirm('Are you sure you want to remove this uploaded image from your portfolio?')) {
-      setUserGraphicItems((prev) => prev.filter((item) => item.id !== id));
-    }
   };
 
   const handleAddVideoItem = (newItem: VideoItem) => {
     setUserVideoItems((prev) => [newItem, ...prev]);
   };
 
-  const handleDeleteUserVideoItem = (id: string) => {
-    if (confirm('Are you sure you want to remove this uploaded video from your portfolio?')) {
-      setUserVideoItems((prev) => prev.filter((item) => item.id !== id));
+  const handleDeleteGraphicItem = (id: string, title?: string) => {
+    setDeletePending({ id, type: 'graphic', title });
+  };
+
+  const handleDeleteVideoItem = (id: string, title?: string) => {
+    setDeletePending({ id, type: 'video', title });
+  };
+
+  const handleConfirmDelete = () => {
+    if (!deletePending) return;
+    const { id, type } = deletePending;
+    if (type === 'graphic') {
+      if (id.startsWith('user-g-')) {
+        setUserGraphicItems((prev) => prev.filter((item) => item.id !== id));
+      } else {
+        setDeletedGraphicItemIds((prev) => [...prev, id]);
+      }
+    } else {
+      if (id.startsWith('user-v-')) {
+        setUserVideoItems((prev) => prev.filter((item) => item.id !== id));
+      } else {
+        setDeletedVideoItemIds((prev) => [...prev, id]);
+      }
     }
+    setDeletePending(null);
   };
 
   const handleOpenHireModal = () => {
@@ -140,16 +196,18 @@ export default function App() {
         <VideoPortfolio
           onPlayVideo={(video) => setSelectedVideoItem(video)}
           userVideoItems={userVideoItems}
+          deletedVideoItemIds={deletedVideoItemIds}
           onOpenUploadModal={() => setIsUploadModalOpen(true)}
-          onDeleteUserVideoItem={handleDeleteUserVideoItem}
+          onDeleteUserVideoItem={handleDeleteVideoItem}
         />
 
         {/* Graphic Design Masonry Portfolio with Upload Feature */}
         <GraphicPortfolio
           onOpenLightbox={(item) => setSelectedGraphicItem(item)}
           userGraphicItems={userGraphicItems}
+          deletedGraphicItemIds={deletedGraphicItemIds}
           onOpenUploadModal={() => setIsUploadModalOpen(true)}
-          onDeleteUserGraphicItem={handleDeleteUserGraphicItem}
+          onDeleteUserGraphicItem={handleDeleteGraphicItem}
         />
 
         {/* Services Section */}
@@ -198,6 +256,15 @@ export default function App() {
       <VideoModal
         video={selectedVideoItem}
         onClose={() => setSelectedVideoItem(null)}
+      />
+
+      {/* Custom Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={!!deletePending}
+        itemTitle={deletePending?.title}
+        itemType={deletePending?.type || 'graphic'}
+        onClose={() => setDeletePending(null)}
+        onConfirm={handleConfirmDelete}
       />
     </div>
   );
