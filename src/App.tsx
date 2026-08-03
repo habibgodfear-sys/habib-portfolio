@@ -19,12 +19,25 @@ import LightboxModal from './components/LightboxModal';
 import VideoModal from './components/VideoModal';
 import UploadModal from './components/UploadModal';
 import DeleteConfirmModal from './components/DeleteConfirmModal';
+import AdminAuthModal from './components/AdminAuthModal';
+import ExportCodeModal from './components/ExportCodeModal';
 import { GraphicItem, VideoItem } from './types';
 import { VIDEO_ITEMS } from './data/portfolioData';
 
 export default function App() {
   const [isCvModalOpen, setIsCvModalOpen] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('isAdminAuth') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
   const [selectedGraphicItem, setSelectedGraphicItem] = useState<GraphicItem | null>(null);
   const [selectedVideoItem, setSelectedVideoItem] = useState<VideoItem | null>(null);
   const [preselectedService, setPreselectedService] = useState<string>('');
@@ -170,6 +183,9 @@ export default function App() {
       <Navbar
         onOpenHireModal={handleOpenHireModal}
         onOpenUploadModal={() => setIsUploadModalOpen(true)}
+        isAdmin={isAdmin}
+        onOpenAdminModal={() => setIsAdminModalOpen(true)}
+        onOpenExportModal={() => setIsExportModalOpen(true)}
       />
 
       {/* Main Page Layout Sections */}
@@ -198,7 +214,7 @@ export default function App() {
           userVideoItems={userVideoItems}
           deletedVideoItemIds={deletedVideoItemIds}
           onOpenUploadModal={() => setIsUploadModalOpen(true)}
-          onDeleteUserVideoItem={handleDeleteVideoItem}
+          onDeleteUserVideoItem={isAdmin ? handleDeleteVideoItem : undefined}
         />
 
         {/* Graphic Design Masonry Portfolio with Upload Feature */}
@@ -207,7 +223,7 @@ export default function App() {
           userGraphicItems={userGraphicItems}
           deletedGraphicItemIds={deletedGraphicItemIds}
           onOpenUploadModal={() => setIsUploadModalOpen(true)}
-          onDeleteUserGraphicItem={handleDeleteGraphicItem}
+          onDeleteUserGraphicItem={isAdmin ? handleDeleteGraphicItem : undefined}
         />
 
         {/* Services Section */}
@@ -244,6 +260,8 @@ export default function App() {
         onClose={() => setIsUploadModalOpen(false)}
         onAddGraphicItem={handleAddGraphicItem}
         onAddVideoItem={handleAddVideoItem}
+        onOpenExportModal={() => setIsExportModalOpen(true)}
+        isAdmin={isAdmin}
       />
 
       {/* Lightbox Image Preview Modal */}
@@ -265,6 +283,39 @@ export default function App() {
         itemType={deletePending?.type || 'graphic'}
         onClose={() => setDeletePending(null)}
         onConfirm={handleConfirmDelete}
+      />
+
+      {/* Admin Authentication & Passcode Modal */}
+      <AdminAuthModal
+        isOpen={isAdminModalOpen}
+        isAdmin={isAdmin}
+        onClose={() => setIsAdminModalOpen(false)}
+        onLoginSuccess={() => {
+          setIsAdmin(true);
+          try {
+            localStorage.setItem('isAdminAuth', 'true');
+          } catch (e) {
+            console.warn('LocalStorage error:', e);
+          }
+        }}
+        onLogout={() => {
+          setIsAdmin(false);
+          try {
+            localStorage.setItem('isAdminAuth', 'false');
+          } catch (e) {
+            console.warn('LocalStorage error:', e);
+          }
+        }}
+      />
+
+      {/* Code Exporter for Vercel Permanent Deployment */}
+      <ExportCodeModal
+        isOpen={isExportModalOpen}
+        userGraphicItems={userGraphicItems}
+        userVideoItems={userVideoItems}
+        deletedGraphicItemIds={deletedGraphicItemIds}
+        deletedVideoItemIds={deletedVideoItemIds}
+        onClose={() => setIsExportModalOpen(false)}
       />
     </div>
   );

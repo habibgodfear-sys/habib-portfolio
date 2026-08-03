@@ -8,6 +8,8 @@ interface UploadModalProps {
   onClose: () => void;
   onAddGraphicItem: (item: GraphicItem) => void;
   onAddVideoItem: (item: VideoItem) => void;
+  onOpenExportModal?: () => void;
+  isAdmin?: boolean;
 }
 
 export default function UploadModal({
@@ -15,10 +17,12 @@ export default function UploadModal({
   onClose,
   onAddGraphicItem,
   onAddVideoItem,
+  onOpenExportModal,
+  isAdmin = false,
 }: UploadModalProps) {
   const [adminPin, setAdminPin] = useState('');
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
-    return localStorage.getItem('isAdminAuth') === 'true';
+    return isAdmin || localStorage.getItem('isAdminAuth') === 'true';
   });
   const [pinError, setPinError] = useState<string | null>(null);
 

@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, Sparkles, Send, Upload } from 'lucide-react';
+import { Menu, X, Sparkles, Send, Upload, ShieldCheck, Lock, Code2 } from 'lucide-react';
 
 interface NavbarProps {
   onOpenHireModal: () => void;
   onOpenUploadModal?: () => void;
+  isAdmin?: boolean;
+  onOpenAdminModal?: () => void;
+  onOpenExportModal?: () => void;
 }
 
 const NAV_ITEMS = [
@@ -16,7 +19,13 @@ const NAV_ITEMS = [
   { label: 'Contact', href: '#contact' },
 ];
 
-export default function Navbar({ onOpenHireModal, onOpenUploadModal }: NavbarProps) {
+export default function Navbar({
+  onOpenHireModal,
+  onOpenUploadModal,
+  isAdmin = false,
+  onOpenAdminModal,
+  onOpenExportModal,
+}: NavbarProps) {
   const [activeSection, setActiveSection] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -124,21 +133,63 @@ export default function Navbar({ onOpenHireModal, onOpenUploadModal }: NavbarPro
         </nav>
 
         {/* Action Buttons */}
-        <div className="hidden md:flex items-center gap-3">
-          {onOpenUploadModal && (
-            <button
-              onClick={onOpenUploadModal}
-              className="px-4 py-2 rounded-full text-xs font-semibold text-slate-300 hover:text-white bg-slate-900/90 border border-white/15 hover:border-cyan-400/50 transition-all flex items-center gap-2 clickable"
-              id="nav-upload-btn"
-            >
-              <Upload className="w-3.5 h-3.5 text-cyan-400" />
-              <span>+ Upload Work</span>
-            </button>
+        <div className="hidden md:flex items-center gap-2.5">
+          {/* Admin Toggle / Status */}
+          {isAdmin ? (
+            <>
+              {/* Export Vercel Code button */}
+              {onOpenExportModal && (
+                <button
+                  onClick={onOpenExportModal}
+                  className="px-3.5 py-2 rounded-full text-xs font-semibold text-blue-300 hover:text-white bg-blue-950/80 border border-blue-500/40 hover:border-blue-400 transition-all flex items-center gap-1.5 shadow-[0_0_12px_rgba(59,130,246,0.3)]"
+                  title="Export Code for Vercel Permanent Update"
+                >
+                  <Code2 className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Export Vercel Code</span>
+                </button>
+              )}
+
+              {/* Upload Work button only shown in Admin Mode */}
+              {onOpenUploadModal && (
+                <button
+                  onClick={onOpenUploadModal}
+                  className="px-3.5 py-2 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border border-cyan-400/40 transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(6,182,212,0.4)]"
+                  id="nav-upload-btn"
+                >
+                  <Upload className="w-3.5 h-3.5 text-white" />
+                  <span>+ Upload Work</span>
+                </button>
+              )}
+
+              {/* Admin Badge */}
+              {onOpenAdminModal && (
+                <button
+                  onClick={onOpenAdminModal}
+                  className="px-3 py-1.5 rounded-full text-xs font-bold text-amber-300 bg-amber-950/60 border border-amber-500/40 hover:bg-amber-900/60 transition-all flex items-center gap-1.5"
+                  title="Admin Mode Enabled"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                  <span>👑 Admin</span>
+                </button>
+              )}
+            </>
+          ) : (
+            /* Admin Login Link for Habibur */
+            onOpenAdminModal && (
+              <button
+                onClick={onOpenAdminModal}
+                className="px-3 py-1.5 rounded-full text-[11px] font-medium text-slate-400 hover:text-slate-200 bg-slate-900/50 hover:bg-slate-900 border border-slate-800 transition-all flex items-center gap-1.5"
+                title="Admin Access (PIN: 1234)"
+              >
+                <Lock className="w-3 h-3 text-slate-400" />
+                <span>Admin Login</span>
+              </button>
+            )
           )}
 
           <button
             onClick={onOpenHireModal}
-            className="relative group px-5 py-2 rounded-full text-xs font-semibold text-white overflow-hidden bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(59,130,246,0.7)] flex items-center gap-2 clickable"
+            className="relative group px-5 py-2 rounded-full text-xs font-semibold text-white overflow-hidden bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(59,130,246,0.7)] flex items-center gap-2 clickable ml-1"
             id="nav-hire-me-btn"
           >
             <Sparkles className="w-3.5 h-3.5 text-cyan-200 animate-pulse" />
@@ -189,17 +240,60 @@ export default function Navbar({ onOpenHireModal, onOpenUploadModal }: NavbarPro
               ))}
 
               <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
-                {onOpenUploadModal && (
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      onOpenUploadModal();
-                    }}
-                    className="w-full py-3 rounded-xl bg-slate-900 border border-white/15 text-slate-200 font-semibold text-sm flex items-center justify-center gap-2"
-                  >
-                    <Upload className="w-4 h-4 text-cyan-400" />
-                    <span>Upload Custom Image / Video</span>
-                  </button>
+                {isAdmin ? (
+                  <>
+                    {onOpenExportModal && (
+                      <button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          onOpenExportModal();
+                        }}
+                        className="w-full py-3 rounded-xl bg-blue-950/90 border border-blue-500/40 text-blue-200 font-semibold text-sm flex items-center justify-center gap-2"
+                      >
+                        <Code2 className="w-4 h-4 text-cyan-400" />
+                        <span>Export Vercel Code</span>
+                      </button>
+                    )}
+
+                    {onOpenUploadModal && (
+                      <button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          onOpenUploadModal();
+                        }}
+                        className="w-full py-3 rounded-xl bg-cyan-600 text-white font-semibold text-sm flex items-center justify-center gap-2"
+                      >
+                        <Upload className="w-4 h-4 text-white" />
+                        <span>+ Upload Custom Work</span>
+                      </button>
+                    )}
+
+                    {onOpenAdminModal && (
+                      <button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          onOpenAdminModal();
+                        }}
+                        className="w-full py-2.5 rounded-xl bg-amber-950/60 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center gap-2"
+                      >
+                        <ShieldCheck className="w-4 h-4 text-amber-400" />
+                        <span>👑 Admin Mode Settings</span>
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  onOpenAdminModal && (
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        onOpenAdminModal();
+                      }}
+                      className="w-full py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium flex items-center justify-center gap-2"
+                    >
+                      <Lock className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Admin Login (PIN: 1234)</span>
+                    </button>
+                  )
                 )}
 
                 <button
