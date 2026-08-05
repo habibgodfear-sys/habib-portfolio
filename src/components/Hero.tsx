@@ -101,7 +101,7 @@ export default function Hero({ onOpenCvModal, onOpenHireModal, onPlayVideo, feat
               <span>Available for Global Visual Projects & Freelance</span>
             </motion.div>
 
-            {/* Main Title Heading */}
+            {/* Main Title Heading with Minimal Elegant Glow */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -110,12 +110,74 @@ export default function Hero({ onOpenCvModal, onOpenHireModal, onPlayVideo, feat
                 x: mousePos.x * 0.4,
                 y: mousePos.y * 0.4,
               }}
-              className="will-change-transform"
+              className="will-change-transform w-full"
             >
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.05] font-sans uppercase">
                 Hi, I’m <br />
-                <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-300 bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(56,189,248,0.5)]">
-                  Habibur Rahman
+                
+                {/* Minimal Light Radiance Container with Subtle Flickering (Tip-Tip) Effect */}
+                <span className="relative inline-block mt-2 pt-1 pb-2">
+                  {/* Subtle Soft Radial Background Glow with gentle pulse */}
+                  <motion.span
+                    animate={{
+                      opacity: [0.3, 0.65, 0.4, 0.75, 0.35],
+                      scale: [0.98, 1.04, 0.99, 1.05, 0.98],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                    className="absolute -inset-x-8 -inset-y-4 rounded-full pointer-events-none blur-xl"
+                    style={{
+                      background:
+                        'radial-gradient(ellipse at center, rgba(56,189,248,0.35) 0%, rgba(59,130,246,0.12) 60%, transparent 80%)',
+                    }}
+                  />
+
+                  {/* Soft Background Bleed Text for Subtle Depth & Flickering Glow */}
+                  <motion.span
+                    aria-hidden="true"
+                    animate={{
+                      opacity: [0.25, 0.55, 0.3, 0.6, 0.25],
+                    }}
+                    transition={{
+                      duration: 2.6,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                    className="absolute inset-0 select-none pointer-events-none text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text blur-md"
+                  >
+                    Habibur Rahman
+                  </motion.span>
+
+                  {/* Elegant Front Text with Soft Tip-Tip Flickering Glow */}
+                  <span className="relative z-10 bg-gradient-to-r from-white via-sky-100 to-cyan-300 bg-clip-text text-transparent animate-tip-tip tracking-tight">
+                    Habibur Rahman
+                  </span>
+
+                  {/* Subtle Sparkle Accents twinkling gently */}
+                  <motion.span
+                    animate={{
+                      scale: [0.8, 1.25, 0.7, 1.1, 0.8],
+                      opacity: [0.3, 0.9, 0.4, 0.95, 0.3],
+                    }}
+                    transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                    className="absolute -top-1 -right-5 z-20 text-cyan-300 pointer-events-none"
+                  >
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-200/90" />
+                  </motion.span>
+
+                  <motion.span
+                    animate={{
+                      scale: [1, 0.7, 1.2, 0.8, 1],
+                      opacity: [0.2, 0.8, 0.3, 0.85, 0.2],
+                    }}
+                    transition={{ duration: 3.1, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+                    className="absolute -bottom-1 -left-4 z-20 text-sky-300 pointer-events-none"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-sky-300/80" />
+                  </motion.span>
                 </span>
               </h1>
             </motion.div>

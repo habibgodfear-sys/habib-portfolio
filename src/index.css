@@ -1,1 +1,92 @@
 @import "tailwindcss";
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-burst {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+    filter: drop-shadow(0 0 30px rgba(6, 182, 212, 0.8));
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+    filter: drop-shadow(0 0 60px rgba(255, 255, 255, 1));
+  }
+}
+
+@keyframes flare-beam {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scaleX(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.3);
+  }
+}
+
+@keyframes text-shimmer-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-pulse-burst {
+  animation: pulse-burst 3.5s ease-in-out infinite;
+}
+
+.animate-flare-beam {
+  animation: flare-beam 2.5s ease-in-out infinite;
+}
+
+.animate-text-shimmer {
+  background-size: 200% auto;
+  animation: text-shimmer-sweep 4s linear infinite;
+}
+
+@keyframes tip-tip-flicker {
+  0%, 100% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.45));
+  }
+  15% {
+    opacity: 0.75;
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.2));
+  }
+  30% {
+    opacity: 1;
+    filter: drop-shadow(0 0 22px rgba(186, 230, 253, 0.7));
+  }
+  50% {
+    opacity: 0.82;
+    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.25));
+  }
+  75% {
+    opacity: 0.98;
+    filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.5));
+  }
+  90% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.3));
+  }
+}
+
+.animate-tip-tip {
+  animation: tip-tip-flicker 2.5s ease-in-out infinite;
+}
+
